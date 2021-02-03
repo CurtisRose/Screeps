@@ -11,7 +11,6 @@ var roleCarrier = {
             creep.memory.transporting = true;
             creep.say('⚡ transporting');
         }
-        creep.memory.targetID = null;
         if(creep.memory.transporting) {
             // If target is not cached in memory, find target at cache it
             // else, move to the target and refill it
