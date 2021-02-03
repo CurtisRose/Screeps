@@ -34,10 +34,10 @@ module.exports = {
             var legionaires = _.filter(currentRoom.find(FIND_MY_CREEPS), (creep) =>creep.memory.role == 'legion');
         
             var carrierGoalCount = 2;
-            var upgraderGoalCount = 5;
+            var upgraderGoalCount = 1;
             var builderGoalCount = 2;
             var stationaryHarvesterGoalCount = 1; // Only need 1 for max efficiency of harvesting per node
-            var mechanicGoalCount = 0; // Tower can be a mechanic I guess, no need for mechanics
+            var mechanicGoalCount = 1; // Tower can be a mechanic I guess, no need for mechanics
             var controllerGoalCount = 0;
             var basicHarvestersGoalCount = 0;
             var legionairesGoalCount = 0;
@@ -80,7 +80,7 @@ module.exports = {
                 console.log('Carriers: ' + carriers.length+'/'+carrierGoalCount);
                 console.log('Upgraders: ' + upgraders.length+'/'+upgraderGoalCount);
                 console.log('Builders: ' + builders.length+'/'+builderGoalCount);
-                //console.log('Mechanics: ' + mechanics.length+'/'+mechanicGoalCount);
+                console.log('Mechanics: ' + mechanics.length+'/'+mechanicGoalCount);
                 //console.log('Controllers: ' + controllers.length+'/'+controllerGoalCount);
                 //console.log('Basic Harvesters: ' + basicHarvesters.length+'/'+basicHarvestersGoalCount);
                 console.log('Legionaires: ' + legionaires.length+'/'+legionairesGoalCount);
@@ -89,11 +89,15 @@ module.exports = {
             var maxEnergy = currentSpawn.room.energyCapacityAvailable;
             var body = [];
             var maxBodyParts = 50;
+            
+            ///////////////////////////////////////////////////////
+            // Stationary Harvester 0
+            ///////////////////////////////////////////////////////
             if(stationaryHarvestersNode0.length < stationaryHarvesterGoalCount) {
                 var newName = 'StationaryHarvestersNode0' + Game.time;
                 body = [WORK,WORK,MOVE];
                 var i = 0;
-                maxEnergy-=300;
+                maxEnergy-=250;
                 while (i < 3 && maxEnergy >= 100) {
                     i++;
                     body.push(WORK);
@@ -102,6 +106,9 @@ module.exports = {
                 currentSpawn.spawnCreep(body, newName,
                     {memory: {role: 'stationaryHarvesterNode0', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Stationary Harvester 1
+            ///////////////////////////////////////////////////////
             else if(sources.length >= 2 && stationaryHarvestersNode1.length < stationaryHarvesterGoalCount) {
                 var sources = currentRoom.find(FIND_SOURCES);
                 // Only want to build this if there are enough sources
@@ -117,6 +124,9 @@ module.exports = {
                     currentSpawn.spawnCreep(body, newName,
                         {memory: {role: 'stationaryHarvesterNode1', targetID: 1}});
             }
+            ///////////////////////////////////////////////////////
+            // Carriers
+            ///////////////////////////////////////////////////////
             else if(carriers.length < carrierGoalCount) {
                 var newName = 'Carriers' + Game.time;
                 while (maxBodyParts >= 4 && maxEnergy >= 300) {
@@ -129,11 +139,17 @@ module.exports = {
                 currentSpawn.spawnCreep(body, newName,
                     {memory: {role: 'carrier', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Legionaires
+            ///////////////////////////////////////////////////////
             else if (legionaires < legionairesGoalCount) {
                 var newName = 'Legionaire' + Game.time;
                 currentSpawn.spawnCreep([ATTACK,ATTACK,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE], newName,
                     {memory: {role: 'legion', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Upgraders
+            ///////////////////////////////////////////////////////
             else if(upgraders.length < upgraderGoalCount) {
                 // Create dynamic body
                 while (maxBodyParts >= 4 && maxEnergy >= 300) {
@@ -148,6 +164,9 @@ module.exports = {
                 currentSpawn.spawnCreep(body, newName,
                     {memory: {role: 'upgrader', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Builders
+            ///////////////////////////////////////////////////////
             else if(builders.length < builderGoalCount && Game.spawns[spawnIndexer].room.find(FIND_MY_CONSTRUCTION_SITES).length > 0) {
                 var newName = 'Builder' + Game.time;
                 while (maxBodyParts >= 4 && maxEnergy >= 250) {
@@ -162,16 +181,25 @@ module.exports = {
                     {memory: {role: 'builder', targetID: 0}});
         
             }
+            ///////////////////////////////////////////////////////
+            // Controllers
+            ///////////////////////////////////////////////////////
             else if(controllers.length < controllerGoalCount) {
                 var newName = 'Controller' + Game.time;
                 currentSpawn.spawnCreep([CLAIM,MOVE], newName,
                     {memory: {role: 'controller', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Basic Harvesters
+            ///////////////////////////////////////////////////////
             else if(basicHarvesters.length < basicHarvestersGoalCount) {
                 var newName = 'BasicHarvester' + Game.time;
                 currentSpawn.spawnCreep([WORK,CARRY,MOVE], newName,
                     {memory: {role: 'basicHarvester', targetID: 0}});
             }
+            ///////////////////////////////////////////////////////
+            // Mechanics
+            ///////////////////////////////////////////////////////
             else if(mechanics.length < mechanicGoalCount) {
                 var newName = 'mechanic' + Game.time;
                 currentSpawn.spawnCreep([WORK,CARRY,MOVE], newName,
