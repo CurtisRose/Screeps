@@ -141,12 +141,10 @@ var roleCarrier = {
                 // This can definitely be done better... but it works
                 var targetContainer = Game.getObjectById(creep.memory.targetID);
                 var status = -1;
-                if (targetContainer.store[RESOURCE_ENERGY].getFreeCapacity > 0) {
-                    const resourcesFound = creep.room.find(FIND_DROPPED_RESOURCES);
-                    const resourceFound = creep.pos.findClosestByPath(resourcesFound);
-                    if (resourceFound != null) {
-                        status = creep.pickup(resourceFound);
-                    }
+                const resourcesFound = creep.room.find(FIND_DROPPED_RESOURCES);
+                const resourceFound = creep.pos.findClosestByPath(resourcesFound);
+                if (resourceFound != null) {
+                    status = creep.pickup(resourceFound);
                 }
                 if (status != OK) {
                     status = creep.withdraw(targetContainer, RESOURCE_ENERGY);

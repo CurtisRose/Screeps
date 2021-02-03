@@ -33,8 +33,8 @@ module.exports = {
             var controllers = _.filter(currentRoom.find(FIND_MY_CREEPS), (creep) =>creep.memory.role == 'controller');
             var legionaires = _.filter(currentRoom.find(FIND_MY_CREEPS), (creep) =>creep.memory.role == 'legion');
         
-            var carrierGoalCount = 2;
-            var upgraderGoalCount = 1;
+            var carrierGoalCount = 3;
+            var upgraderGoalCount = 6;
             var builderGoalCount = 2;
             var stationaryHarvesterGoalCount = 1; // Only need 1 for max efficiency of harvesting per node
             var mechanicGoalCount = 1; // Tower can be a mechanic I guess, no need for mechanics
