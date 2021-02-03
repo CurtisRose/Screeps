@@ -35,10 +35,8 @@ var roleMechanic = {
                     }
                 }
                 creep.memory.targetID = target.id;
-                console.log("TEST");
             }
             else {
-                console.log("TEST2");
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffff00'}});
                 }
